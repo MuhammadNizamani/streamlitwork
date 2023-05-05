@@ -1,1 +1,3 @@
 conda create -n stm python=3.9
+how to run the streamlit
+ streamlit run streamlit_app.py
