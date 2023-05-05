@@ -7,6 +7,7 @@ import io
 from utils import contains_dub
 from matplotlib import pyplot as plt
 from wordcloud import WordCloud
+from genre import wordC, count_genre
 df = pd.read_csv("animedata.csv")
 st.text_input("Enter the number of of row you wants to see",10, key="number")
 head = df.head(int(st.session_state.number))
@@ -55,3 +56,23 @@ plt.title("Anime Released Per Year")
 plt.xlim(1960, 2025)
 st.pyplot()
 st.markdown("<span style='font-size:20px;'>Nowdays anime are populer so anime got more released nowdays</span>", unsafe_allow_html=True)
+genres_text = wordC(anime_in_sub=anime_in_sub)
+# create the WordCloud object
+wordcloud = WordCloud(width=800, height=800, background_color='white', min_font_size=10).generate(genres_text)
+
+# plot the WordCloud image
+plt.figure(figsize=(8, 8), facecolor=None)
+plt.imshow(wordcloud)
+plt.axis('off')
+plt.tight_layout(pad=0)
+st.pyplot()
+
+top10_counts = count_genre(genres_text)
+
+# plot as bar chart
+# fig, ax = plt.subplots(figsize=(6, 4))
+top10_counts.plot.bar()
+plt.title('Top 10 Anime Genres')
+plt.xlabel('Genre')
+plt.ylabel('Count')
+st.pyplot()
