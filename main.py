@@ -79,7 +79,7 @@ for num in range(len(list_of_genre)):
     for x in range(len(a)):
         genre.append(a[x])
 
-print(genre)
+# print(genre)
 genre = [x for x in genre if x != 'nan']
 genre_series = pd.Series(genre)
 # count frequency of each genre
@@ -99,6 +99,24 @@ fig.update_layout(title="Top 10 Genres",
                   yaxis_title="Genre")
 
 st.plotly_chart(fig, use_container_width=True)
+
+genre_counts = genre_series.value_counts()
+
+# Assuming you have a Pandas Series called 'genre_counts'
+top_genres = genre_counts.sort_values(ascending=True)[:10] # Get top 10 genres
+
+fig = go.Figure(data=[go.Bar(
+            x=top_genres.values,
+            y=top_genres.index,
+            orientation='h'
+)])
+
+fig.update_layout(title="10 Genres least genre",
+                  xaxis_title="Count",
+                  yaxis_title="Genre")
+
+st.plotly_chart(fig, use_container_width=True)
+
 
 
  
