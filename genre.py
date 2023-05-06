@@ -22,6 +22,6 @@ def count_genre(genre):
     sorted_counts = genre_counts.sort_values(ascending=False)
 
 # take top 10
-    top10_counts = sorted_counts.head(10)
+    top10_counts = sorted_counts.head(5)
     return top10_counts
 

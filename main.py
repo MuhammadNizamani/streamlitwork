@@ -7,6 +7,7 @@ import io
 from utils import contains_dub
 from matplotlib import pyplot as plt
 from wordcloud import WordCloud
+import plotly.graph_objs as go
 from genre import wordC, count_genre
 df = pd.read_csv("animedata.csv")
 st.text_input("Enter the number of of row you wants to see",10, key="number")
@@ -67,12 +68,37 @@ plt.axis('off')
 plt.tight_layout(pad=0)
 st.pyplot()
 
-top10_counts = count_genre(genres_text)
+# top10_counts = count_genre(genres_text)
+# print(genres_text)
+genre = []
+list_of_genre = anime_in_sub['Genre'].tolist()
+for num in range(len(list_of_genre)):
+    a = str(list_of_genre[num]).split(",")
+#     print(list_of_genre)
+# print(a)
+    for x in range(len(a)):
+        genre.append(a[x])
 
-# plot as bar chart
-# fig, ax = plt.subplots(figsize=(6, 4))
-top10_counts.plot.bar()
-plt.title('Top 10 Anime Genres')
-plt.xlabel('Genre')
-plt.ylabel('Count')
-st.pyplot()
+print(genre)
+genre = [x for x in genre if x != 'nan']
+genre_series = pd.Series(genre)
+# count frequency of each genre
+genre_counts = genre_series.value_counts()
+
+# Assuming you have a Pandas Series called 'genre_counts'
+top_genres = genre_counts.sort_values(ascending=False)[:10] # Get top 10 genres
+
+fig = go.Figure(data=[go.Bar(
+            x=top_genres.values,
+            y=top_genres.index,
+            orientation='h'
+)])
+
+fig.update_layout(title="Top 10 Genres",
+                  xaxis_title="Count",
+                  yaxis_title="Genre")
+
+st.plotly_chart(fig, use_container_width=True)
+
+
+ 
