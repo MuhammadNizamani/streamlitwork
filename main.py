@@ -4,13 +4,17 @@ import pandas as pd
 import time 
 import seaborn as sns
 import io
-from utils import contains_dub
+# from utils import contains_dub
 from matplotlib import pyplot as plt
 from wordcloud import WordCloud
 import plotly.graph_objs as go
-from genre import wordC, count_genre
+from genre import wordC
+import plotly.express as px
+st.markdown("<span style='font-size:40px;text-align: center;'>EDA of Anime dataset</span>", unsafe_allow_html=True)
+
 df = pd.read_csv("animedata.csv")
-st.text_input("Enter the number of of row you wants to see",10, key="number")
+st.markdown("<span style='font-size:25px;'>Enter the number of of row you wants to see</span>", unsafe_allow_html=True)
+st.text_input("",10, key="number")
 head = df.head(int(st.session_state.number))
 st.markdown("<span style='font-size:25px;'>This dataset is taken from website name gogoanimes</span>", unsafe_allow_html=True)
 st.dataframe(head)
@@ -56,7 +60,10 @@ plt.ylabel("Number of Anime Released")
 plt.title("Anime Released Per Year")
 plt.xlim(1960, 2025)
 st.pyplot()
-st.markdown("<span style='font-size:20px;'>Nowdays anime are populer so anime got more released nowdays</span>", unsafe_allow_html=True)
+st.markdown("<span style='font-size:21px;'>Anime are getting more released in 2010 to 2022 becasue of internet anime got more audience </span>", unsafe_allow_html=True)
+st.write("")
+st.write("")
+st.write("")
 genres_text = wordC(anime_in_sub=anime_in_sub)
 # create the WordCloud object
 wordcloud = WordCloud(width=800, height=800, background_color='white', min_font_size=10).generate(genres_text)
@@ -117,6 +124,36 @@ fig.update_layout(title="10 Genres least genre",
 
 st.plotly_chart(fig, use_container_width=True)
 
+genre_series = pd.Series(genre)
+genre_counts = genre_series.value_counts()
+sorted_counts = genre_counts.sort_values(ascending=False)
+top10_counts = sorted_counts.head(20)
 
+fig = px.pie(values=top10_counts.values, names=top10_counts.index, title='Top 20 Genres')
+st.plotly_chart(fig)
+
+# count frequency of each anime type
+type_counts = anime_in_sub['Type'].value_counts()
+
+# sort in descending order
+sorted_counts = type_counts.sort_values(ascending=False)
+
+# take top 10
+top10_counts = sorted_counts.head(10)
+
+# plot as bar chart
+fig = px.bar(x=top10_counts.index, y=top10_counts.values, labels={'x': 'Anime Type', 'y': 'Count'}, title='Top 10 Anime Types')
+st.plotly_chart(fig, use_container_width=True)
+status_counts = anime_in_sub.groupby('Status').size()
+
+# create a bar chart of the status counts using Plotly
+fig = go.Figure(data=[go.Bar(x=status_counts.index, y=status_counts.values)])
+
+# set the chart title and axis labels
+fig.update_layout(title='Anime Status', xaxis_title='Status', yaxis_title='Count')
+
+# display the chart
+
+st.plotly_chart(fig, use_container_width=True)
 
  
