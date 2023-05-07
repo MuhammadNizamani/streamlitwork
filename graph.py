@@ -60,17 +60,7 @@ def wordcloud_graph(anime_in_sub):
 
 
 def top10_genre(anime_in_sub):
-#     genre = []
-#     list_of_genre = anime_in_sub['Genre'].tolist()
-#     for num in range(len(list_of_genre)):
-#         a = str(list_of_genre[num]).split(",")
-# #     print(list_of_genre)
-# # print(a)
-#         for x in range(len(a)):
-#             genre.append(a[x])
 
-# # print(genre)
-#     genre = [x for x in genre if x != 'nan']
     genre = wordforgraph(anime_in_sub=anime_in_sub)
     genre_series = pd.Series(genre)
     # count frequency of each genre
@@ -104,7 +94,7 @@ def least10_genre(anime_in_sub):
                 orientation='h'
     )])
 
-    fig.update_layout(title="10 Genres least genre",
+    fig.update_layout(title="least 10 Genres",
                     xaxis_title="Count",
                     yaxis_title="Genre")
     return fig

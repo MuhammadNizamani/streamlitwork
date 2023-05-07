@@ -1,12 +1,6 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
 import io
-# from utils import contains_dub
-from matplotlib import pyplot as plt
-from wordcloud import WordCloud
-import plotly.graph_objs as go
-import plotly.express as px
 from graph import heatmap, released_bar, wordcloud_graph, top10_genre, least10_genre, top20_genre, top10tpye, status
 sidebar = st.sidebar.selectbox("", [])
 
