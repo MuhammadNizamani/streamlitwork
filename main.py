@@ -8,26 +8,38 @@ from wordcloud import WordCloud
 import plotly.graph_objs as go
 from genre import wordC
 import plotly.express as px
-sidebar = st.sidebar.selectbox('Dataset Detail', ['Intro', 'Name','Type','Plot Summary','Released', 'Genre', 'Status', 'Other Name'])
+from graph import heatmap, released_bar
+sidebar = st.sidebar.selectbox("", [])
 
 # write text in sidebar
-if sidebar == "Intro":
-    st.sidebar.write('In this EDA dataset of anime taken from kaggle.')
-    st.sidebar.write('There are 7 field and see detail by selecting diffrent option of Navigation.')
-elif sidebar == "Name":
-    st.sidebar.write("Name of anime in English")
-elif sidebar == "Type":
-    st.sidebar.write("Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)")
-elif sidebar == 'Plot Summary':
-    st.sidebar.write("Anime's main stroy line in paragraph")
-elif sidebar == 'Genre':
-    st.sidebar.write("Genre of Anime (Genre e.g comedy, romence, adventure, etc)")
-elif sidebar == 'Released':
-    st.sidebar.write("Released: year in which anime got released")
-elif sidebar == "Status":
-    st.sidebar.write("Status of anime mean this anime is completed or continue or upcoming")
-elif sidebar == 'Other Name':
-    st.sidebar.write("Other name: In anime word anime has usually anime has one japanese name and other english name . E.G Attack on Titan other name Shingeki no Kyojin")
+# if sidebar == "Intro":
+st.sidebar.markdown("<span style='font-size:30px;'>Dataset Details</span>", unsafe_allow_html=True)
+
+st.sidebar.markdown("<span style='font-size:25px;'>Introduction</span>", unsafe_allow_html=True)
+st.sidebar.write('In this EDA dataset of anime taken from kaggle.')
+st.sidebar.write('There are 7 field and see detail by selecting diffrent option of Navigation.')
+# elif sidebar == "Name":
+st.sidebar.markdown("<span style='font-size:25px;'>Name</span>", unsafe_allow_html=True)
+st.sidebar.write("Name of anime in English")
+# elif sidebar == "Type":
+st.sidebar.markdown("<span style='font-size:25px;'>Type</span>", unsafe_allow_html=True)
+st.sidebar.write("Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)")
+# elif sidebar == 'Plot Summary':
+st.sidebar.markdown("<span style='font-size:25px;'>Plot Summary</span>", unsafe_allow_html=True)
+st.sidebar.write("Anime's main stroy line in paragraph")
+# elif sidebar == 'Genre':
+st.sidebar.markdown("<span style='font-size:25px;'>Genre</span>", unsafe_allow_html=True)
+st.sidebar.write("Genre of Anime (Genre e.g comedy, romence, adventure, etc)")
+# elif sidebar == 'Released':
+st.sidebar.markdown("<span style='font-size:25px;'>Released</span>", unsafe_allow_html=True)
+st.sidebar.write("Released: year in which anime got released")
+# elif sidebar == "Status":
+st.sidebar.markdown("<span style='font-size:25px;'>Status</span>", unsafe_allow_html=True)
+st.sidebar.write("Status of anime mean this anime is completed or continue or upcoming")
+# elif sidebar == 'Other Name':
+st.sidebar.markdown("<span style='font-size:25px;'>Other Name</span>", unsafe_allow_html=True)
+st.sidebar.write("Other name: In anime word anime has usually anime has one japanese name and other english name . E.G Attack on Titan other name Shingeki no Kyojin")
+
 
 st.markdown("<span style='font-size:40px;text-align: center;'>EDA of Anime dataset</span>", unsafe_allow_html=True)
 
@@ -37,30 +49,26 @@ st.text_input("",10, key="number")
 head = df.head(int(st.session_state.number))
 st.markdown("<span style='font-size:25px;'>This dataset is taken from website name gogoanimes</span>", unsafe_allow_html=True)
 st.dataframe(head)
-st.markdown("<span style='font-size:25px;'>About field in this dataset</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:25px;'>There are 7 field</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Name of the Anime</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>plot summary of anime</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Genre of Anime (Genre e.g comedy, romence, adventure, etc)</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Status of anime mean this anime is completed or continue or upcoming</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Other name: In anime word anime has usually anime has one japanese name and other english name . E.G Attack on Titan other name Shingeki no Kyojin</span>", unsafe_allow_html=True)
-st.markdown("<span style='font-size:17px;'>Released: year in which anime got released</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:25px;'>About field in this dataset</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:25px;'>There are 7 field</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Name of the Anime</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>plot summary of anime</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Genre of Anime (Genre e.g comedy, romence, adventure, etc)</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Status of anime mean this anime is completed or continue or upcoming</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Other name: In anime word anime has usually anime has one japanese name and other english name . E.G Attack on Titan other name Shingeki no Kyojin</span>", unsafe_allow_html=True)
+# st.markdown("<span style='font-size:17px;'>Released: year in which anime got released</span>", unsafe_allow_html=True)
 
 st.markdown("<span style='font-size:25px;'><u>Heatmap of null values:</u></span>", unsafe_allow_html=True)
-fig = px.imshow(df.isnull(), color_continuous_scale='Viridis')
-fig.update_layout(title='Missing Data Heatmap')
-fig.update_xaxes(title='Columns')
-fig.update_yaxes(title='Rows')
-
+fig = heatmap(df= df)
 st.plotly_chart(fig)
 
-# st.set_option('deprecation.showPyplotGlobalUse', False)
 st.write("")
 st.write("")
 st.markdown("<span style='font-size:23px;'>Anime are produce in japan so they original comes in japanese language so for USA anime comes in english dub so  i am going to remove that</span>", unsafe_allow_html=True)
 anime_in_sub = df[~df['name'].str.contains('dub', case=False)]
 st.dataframe(anime_in_sub.head(7))
+#for info function to show on streamlit
 buffer = io.StringIO()
 anime_in_sub.info(buf = buffer)
 s= buffer.getvalue()
@@ -69,18 +77,19 @@ st.write("")
 st.write("")
 st.markdown("<span style='font-size:25px;'>Anime released in years 1960 to 2025</span>", unsafe_allow_html=True)
 
-released = anime_in_sub["Released"]
+# released = anime_in_sub["Released"]
 
-# convert the "Released" column to a datetime format
-released = pd.to_datetime(released, errors='coerce')
+# # convert the "Released" column to a datetime format
+# released = pd.to_datetime(released, errors='coerce')
 
-# extract the year from the datetime format and store it in a new column
-anime_in_sub["year"] = released.dt.year
-anime_per_year = anime_in_sub.groupby("year")["name"].count().reset_index()
+# # extract the year from the datetime format and store it in a new column
+# anime_in_sub["year"] = released.dt.year
+# anime_per_year = anime_in_sub.groupby("year")["name"].count().reset_index()
 
-# plot using Plotly
-fig = px.bar(anime_per_year, x="year", y="name", labels={"year": "Year", "name": "Number of Anime Released"})
-fig.update_layout(title="Anime Released Per Year", xaxis=dict(range=[1960, 2025]))
+# # plot using Plotly
+# fig = px.bar(anime_per_year, x="year", y="name", labels={"year": "Year", "name": "Number of Anime Released"})
+# fig.update_layout(title="Anime Released Per Year", xaxis=dict(range=[1960, 2025]))
+fig = released_bar(anime_in_sub=anime_in_sub)
 st.plotly_chart(fig)
 st.markdown("<span style='font-size:21px;'>Anime are getting more released in 2010 to 2022 becasue of internet anime got more audience </span>", unsafe_allow_html=True)
 st.write("")
