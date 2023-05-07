@@ -1,8 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import time 
-import seaborn as sns
 import io
 # from utils import contains_dub
 from matplotlib import pyplot as plt
@@ -10,6 +8,18 @@ from wordcloud import WordCloud
 import plotly.graph_objs as go
 from genre import wordC
 import plotly.express as px
+sidebar = st.sidebar.selectbox('Dataset Detail', ['Intro', 'Name','Type','Plot Summary','Released', 'Genre', 'Status'])
+
+# write text in sidebar
+if sidebar == "Intro":
+    st.sidebar.write('In this EDA dataset of anime taken from kaggle.')
+    st.sidebar.write('There are 7 field and see detail by selecting diffrent option of Navigation.')
+elif sidebar == "Name":
+    st.sidebar.write("Name of anime in English")
+elif sidebar == "Type":
+    st.sidebar.write("Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)")
+elif sidebar == 'Plot Summary':
+    st.sidebar.write("Anime's main stroy line in paragraph")
 st.markdown("<span style='font-size:40px;text-align: center;'>EDA of Anime dataset</span>", unsafe_allow_html=True)
 
 df = pd.read_csv("animedata.csv")
@@ -29,9 +39,13 @@ st.markdown("<span style='font-size:17px;'>Other name: In anime word anime has u
 st.markdown("<span style='font-size:17px;'>Released: year in which anime got released</span>", unsafe_allow_html=True)
 
 st.markdown("<span style='font-size:25px;'><u>Heatmap of null values:</u></span>", unsafe_allow_html=True)
-sns.heatmap(df.isnull(), cmap='viridis', cbar=False)
-st.set_option('deprecation.showPyplotGlobalUse', False)
-st.pyplot()
+fig = px.imshow(df.isnull(), color_continuous_scale='Viridis')
+fig.update_layout(title='Missing Data Heatmap')
+fig.update_xaxes(title='Columns')
+fig.update_yaxes(title='Rows')
+
+st.plotly_chart(fig)
+
 # st.set_option('deprecation.showPyplotGlobalUse', False)
 st.write("")
 st.write("")
@@ -53,13 +67,12 @@ released = pd.to_datetime(released, errors='coerce')
 
 # extract the year from the datetime format and store it in a new column
 anime_in_sub["year"] = released.dt.year
-anime_per_year = anime_in_sub.groupby("year")["name"].count()
-plt.bar(anime_per_year.index, anime_per_year.values)
-plt.xlabel("Year")
-plt.ylabel("Number of Anime Released")
-plt.title("Anime Released Per Year")
-plt.xlim(1960, 2025)
-st.pyplot()
+anime_per_year = anime_in_sub.groupby("year")["name"].count().reset_index()
+
+# plot using Plotly
+fig = px.bar(anime_per_year, x="year", y="name", labels={"year": "Year", "name": "Number of Anime Released"})
+fig.update_layout(title="Anime Released Per Year", xaxis=dict(range=[1960, 2025]))
+st.plotly_chart(fig)
 st.markdown("<span style='font-size:21px;'>Anime are getting more released in 2010 to 2022 becasue of internet anime got more audience </span>", unsafe_allow_html=True)
 st.write("")
 st.write("")
@@ -68,13 +81,17 @@ genres_text = wordC(anime_in_sub=anime_in_sub)
 # create the WordCloud object
 wordcloud = WordCloud(width=800, height=800, background_color='white', min_font_size=10).generate(genres_text)
 
-# plot the WordCloud image
-plt.figure(figsize=(8, 8), facecolor=None)
-plt.imshow(wordcloud)
-plt.axis('off')
-plt.tight_layout(pad=0)
-st.pyplot()
+fig = go.Figure(go.Image(z=wordcloud.to_array()))
 
+# set the axis to be invisible
+fig.update_xaxes(showticklabels=False, showgrid=False, zeroline=False)
+fig.update_yaxes(showticklabels=False, showgrid=False, zeroline=False)
+
+# set the layout to be tight and remove the margin
+fig.update_layout(margin=dict(l=0, r=0, t=0, b=0), autosize=True)
+
+# display the Plotly figure
+st.plotly_chart(fig)
 # top10_counts = count_genre(genres_text)
 # print(genres_text)
 genre = []
@@ -156,4 +173,5 @@ fig.update_layout(title='Anime Status', xaxis_title='Status', yaxis_title='Count
 
 st.plotly_chart(fig, use_container_width=True)
 
- 
+
+# create a sample dataframe
