@@ -8,7 +8,7 @@ from wordcloud import WordCloud
 import plotly.graph_objs as go
 from genre import wordC
 import plotly.express as px
-sidebar = st.sidebar.selectbox('Dataset Detail', ['Intro', 'Name','Type','Plot Summary','Released', 'Genre', 'Status'])
+sidebar = st.sidebar.selectbox('Dataset Detail', ['Intro', 'Name','Type','Plot Summary','Released', 'Genre', 'Status', 'Other Name'])
 
 # write text in sidebar
 if sidebar == "Intro":
@@ -20,6 +20,15 @@ elif sidebar == "Type":
     st.sidebar.write("Type of name anime (Type of anime mean is it TV show, or ova, or spring name etc)")
 elif sidebar == 'Plot Summary':
     st.sidebar.write("Anime's main stroy line in paragraph")
+elif sidebar == 'Genre':
+    st.sidebar.write("Genre of Anime (Genre e.g comedy, romence, adventure, etc)")
+elif sidebar == 'Released':
+    st.sidebar.write("Released: year in which anime got released")
+elif sidebar == "Status":
+    st.sidebar.write("Status of anime mean this anime is completed or continue or upcoming")
+elif sidebar == 'Other Name':
+    st.sidebar.write("Other name: In anime word anime has usually anime has one japanese name and other english name . E.G Attack on Titan other name Shingeki no Kyojin")
+
 st.markdown("<span style='font-size:40px;text-align: center;'>EDA of Anime dataset</span>", unsafe_allow_html=True)
 
 df = pd.read_csv("animedata.csv")
