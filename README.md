@@ -9,3 +9,14 @@ Go to that folder <br>
 run the code by using following command <br>
 
 ```streamlit run main.py```  <br>
+
+check out data visuliztion 
+ 
+
+<div align="left">
+
+<a href="https://muhammadnizamani-streamlitwork-main-7dkcui.streamlit.app" target="_blank">
+<img src=https://img.shields.io/badge/dev.to-%2308090A.svg?&style=for-the-badge&logo=dev.to&logoColor=white alt=devto style="margin-bottom: 5px;" />
+</a>
+</a>  
+</div>  
