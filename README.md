@@ -1,4 +1,5 @@
-# run this coding by following step
+# Run this coding by following step
+## This using streamlit you can check the streamlit by going on my profile then click on bottom which says streamlit
 install streamlit using pip <br>
 ```pip install streamlit``` <br>
 clone this repo by using <br>
